@@ -1475,12 +1475,34 @@ window.LinkedinToResumeJson = (() => {
         return rawJson;
     };
 
+    async function saveUserInformationToUrl(jsonData, url) {
+        try {
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(jsonData)
+            });
+
+            if (response.ok) {
+                console.log('User information saved successfully.');
+            } else {
+                console.error('Failed to save user information.');
+            }
+        } catch (error) {
+            console.error('Error occurred while saving user information:', error);
+        }
+    }
+
     /** @param {SchemaVersion} version */
     LinkedinToResumeJson.prototype.parseAndDownload = async function parseAndDownload(version = 'stable') {
         const rawJson = await this.parseAndGetRawJson(version);
         const fileName = `${_outputJsonLegacy.basics.name.replace(/\s/g, '_')}.resume.json`;
         const fileContents = JSON.stringify(rawJson, null, 2);
         this.debugConsole.log(fileContents);
+        const url = 'http://127.0.0.1:8000/save_employee_data'; // Replace with the actual URL to save user information
+        await saveUserInformationToUrl(rawJson, url);
         promptDownload(fileContents, fileName, 'application/json');
     };
 
