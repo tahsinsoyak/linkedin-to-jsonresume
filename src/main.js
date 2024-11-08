@@ -1476,6 +1476,7 @@ window.LinkedinToResumeJson = (() => {
     };
 
     async function saveUserInformationToUrl(jsonData, url) {
+        console.log("helloooooooooooooo")
         try {
             const response = await fetch(url, {
                 method: 'POST',
@@ -1501,8 +1502,10 @@ window.LinkedinToResumeJson = (() => {
         const fileName = `${_outputJsonLegacy.basics.name.replace(/\s/g, '_')}.resume.json`;
         const fileContents = JSON.stringify(rawJson, null, 2);
         this.debugConsole.log(fileContents);
-        const url = 'http://127.0.0.1:8000/save_employee_data'; // Replace with the actual URL to save user information
+        const url = 'http://127.0.0.1:8000/api/save_employee_data/'; // Replace with the actual URL to save user information
+        this.debugConsole.log("saveUserInformationToUrl fonksiyonu çağrılacak...");
         await saveUserInformationToUrl(rawJson, url);
+        console.log("saveUserInformationToUrl fonksiyonu çağrılacak 2222222...");
         promptDownload(fileContents, fileName, 'application/json');
     };
 
